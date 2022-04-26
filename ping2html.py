@@ -92,7 +92,7 @@ ftkinter()
 
 
 def css():
-    fcss = open("D:\\Python\\docping.css", "w", encoding="utf-8")
+    fcss = open(f"{os.path.dirname(__file__)}\\docping.css", "w", encoding="utf-8")
     fcss.truncate(0)
     fcss.write('''
 body {
