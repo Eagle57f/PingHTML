@@ -96,12 +96,35 @@ nav a:hover
 
     def fHTML(heuredebuttest, heurefintest, dureetest, nombrecoupures, dureecoupures, moyennecoupures, totalcoupures, heurefintestchange):
         Fichtexte = ''''''
-        for fichier in os.listdir(os.path.dirname(__file__)):
-            if fichier.endswith(".html") and fichier.startswith("docping -"):
-                if "en cours" in fichier:
+        i = 0
+        for fichiers in os.listdir(os.path.dirname(__file__)):
+            if fichiers.endswith(".html") and fichiers.startswith("docping -"):
+                if "en cours" in fichiers:
                     Fichtexte = Fichtexte + f'''<a href="docping - {heurefintestchange}.html">docping - {heurefintestchange}.html</a>'''
                 else:
-                    Fichtexte = Fichtexte + f'''<a href="{fichier}">{fichier}</a>'''
+                    Fichtexte = Fichtexte + f'''<a href="{fichiers}">{fichiers}</a>'''
+
+        for fichiers in os.listdir(os.path.dirname(__file__)):
+            if fichiers.endswith(".html") and fichiers.startswith("docping -"):
+                if "en cours" in fichiers:
+                    pass
+                else:
+                    with open(f"{os.path.dirname(__file__)}\\{fichiers}", "r", encoding="utf-8") as fichier:
+                        contenu = fichier.readlines()
+                    
+                    fichier = open(f"{os.path.dirname(__file__)}\\{fichiers}", "w", encoding="utf-8")
+
+                    for ligne in contenu:
+                        i = i + 1
+                        if "<a href=" in ligne:
+                            contenu[i-1] = Fichtexte
+                    
+                    fichier.writelines(contenu)
+                    fichier.close()
+
+
+
+
         return(f'''
 <html>
     <head>
