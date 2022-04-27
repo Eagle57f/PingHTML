@@ -25,7 +25,14 @@ def fexit():
 def prg():
     global numberFichier, totalcoupures
     var=True
-    fichier = open(f"{os.path.dirname(__file__)}\\docping - en cours.html", "r+", encoding="utf-8")
+    for fichier in os.listdir(os.path.dirname(__file__)):
+        if "docping - en cours.html" in fichier:
+            fichier = open(f"{os.path.dirname(__file__)}\\docping - en cours.html", "r+", encoding="utf-8")
+        else:
+            fichier = open(f"{os.path.dirname(__file__)}\\docping - en cours.html", "w", encoding="utf-8")
+            fichier.close()
+            fichier = open(f"{os.path.dirname(__file__)}\\docping - en cours.html", "r+", encoding="utf-8")
+
     fichierpath = os.path.dirname(__file__)
     fichier.truncate(0)
     heuredebuttest = datetime.now()
@@ -66,7 +73,7 @@ def prg():
 ftkinter()
 
 def css():
-    fcss = open(f"{os.path.dirname(__file__)}\\docping.css", "w", encoding="utf-8")
+    fcss = open(f"{os.path.dirname(__file__)}\\docping.css", "w+", encoding="utf-8")
     fcss.truncate(0)
     fcss.write(HTML_CSS.fCSS())
     fcss.close()
