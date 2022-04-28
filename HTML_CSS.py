@@ -59,12 +59,12 @@ nav a
 
 nav a:hover
 {
-    color: #56ff38;
+    color: #38f2ff;
     background: #fff;
     position: relative;
     background-color: #fff;
-    border-top-left-radius: 22px;
-    border-bottom-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom-right-radius: 22px;
 }
 
 .bilan
@@ -115,8 +115,6 @@ nav a:hover
                     with open(f"{os.path.dirname(__file__)}\\{fichiers}", "r", encoding="utf-8") as fichier:
                         contenu = fichier.readlines()
                     
-                    fichier = open(f"{os.path.dirname(__file__)}\\{fichiers}", "w", encoding="utf-8")
-
                     for ligne in contenu:
                         i = i + 1
                         if "<nav>" in ligne and stop==False:
@@ -127,8 +125,8 @@ nav a:hover
                                 print(len(contenu))
                     i = 0
                     
-                    fichier.writelines(contenu)
-                    fichier.close()
+                    with open(f"{os.path.dirname(__file__)}\\{fichiers}", "w", encoding="utf-8") as fichier:
+                        fichier.writelines(contenu)
 
 
 
