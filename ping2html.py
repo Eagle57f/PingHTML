@@ -73,9 +73,9 @@ def prg():
 ftkinter()
 
 def css():
-    fcss = open(f"{os.path.dirname(__file__)}\\docping.css", "w+", encoding="utf-8")
-    fcss.truncate(0)
-    fcss.write(HTML_CSS.fCSS())
-    fcss.close()
+    with open(f"{os.path.dirname(__file__)}\\docping.css", "w+", encoding="utf-8") as fcss:
+        fcss.truncate(0)
+        fcss.write(HTML_CSS.fCSS())
+
 
 css()
