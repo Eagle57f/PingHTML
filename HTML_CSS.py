@@ -95,7 +95,7 @@ nav a:hover
 }''')
 
     def fHTML(heuredebuttest, heurefintest, dureetest, nombrecoupures, dureecoupures, moyennecoupures, totalcoupures, heurefintestchange):
-        Fichtexte = ''''''
+        Fichtexte = f'''<nav><h2>Navigation:</h2>'''
         i = 0
         for fichiers in os.listdir(os.path.dirname(__file__)):
             if fichiers.endswith(".html") and fichiers.startswith("docping -"):
@@ -103,8 +103,11 @@ nav a:hover
                     Fichtexte = Fichtexte + f'''<a href="docping - {heurefintestchange}.html">docping - {heurefintestchange}.html</a>'''
                 else:
                     Fichtexte = Fichtexte + f'''<a href="{fichiers}">{fichiers}</a>'''
+        Fichtexte = Fichtexte + f'''</nav>
+'''
 
         for fichiers in os.listdir(os.path.dirname(__file__)):
+            stop=False
             if fichiers.endswith(".html") and fichiers.startswith("docping -"):
                 if "en cours" in fichiers:
                     pass
@@ -116,8 +119,13 @@ nav a:hover
 
                     for ligne in contenu:
                         i = i + 1
-                        if "<a href=" in ligne:
-                            contenu[i-1] = Fichtexte
+                        if "<nav>" in ligne and stop==False:
+                            try:
+                                contenu[i-1] = Fichtexte
+                                stop=True
+                            except:
+                                print(len(contenu))
+                    i = 0
                     
                     fichier.writelines(contenu)
                     fichier.close()
@@ -133,10 +141,7 @@ nav a:hover
         <title>Ping</title>
     </head>
     <body>
-            <nav>
-            <h2>Navigation:</h2>
             {Fichtexte}
-        </nav>
 
         <header>
             <h1>Résultats du test de coupures de connection</h1>
