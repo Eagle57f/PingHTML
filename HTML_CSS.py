@@ -11,12 +11,10 @@ body
     font-size: 12px;
     text-align: center;
 }
-
 p
 {
     font-size: 12px;
 }
-
 header
 {
     position: absolute;
@@ -27,7 +25,6 @@ header
     height: 60px;
     background-color: #4389da;
 }
-
 nav
 {
     position: absolute;
@@ -39,7 +36,6 @@ nav
     background-color: rgb(34, 46, 46);
     z-index: 100;
 }
-
 nav h2
 {
     cursor: pointer;
@@ -56,7 +52,6 @@ nav a
     text-decoration: none;
     outline: none;
 }
-
 nav a:hover
 {
     color: #38f2ff;
@@ -66,7 +61,6 @@ nav a:hover
     border-top-right-radius: 22px;
     border-bottom-right-radius: 22px;
 }
-
 .bilan
 {
     position: absolute;
@@ -76,11 +70,9 @@ nav a:hover
     top: 60px;
     background-color: #5a86ff;
 }
-
 .bilan:hover {
     color: #83fbff;
 }
-
 .container
 {
     position: absolute;
@@ -89,7 +81,6 @@ nav a:hover
     top: 210px;
     background-color: #366cff;
 }
-
 .coupure:hover {
     color: #c27efa;
 }''')
@@ -97,10 +88,11 @@ nav a:hover
     def fHTML(heuredebuttest, heurefintest, dureetest, nombrecoupures, dureecoupures, moyennecoupures, totalcoupures, heurefintestchange):
         Fichtexte = f'''<nav><h2>Navigation:</h2>'''
         i = 0
+        isclass = ""
         for fichiers in os.listdir(os.path.dirname(__file__)):
-            if fichiers.endswith(".html") and fichiers.startswith("docping -"):
-                if "en cours" in fichiers:
-                    Fichtexte = Fichtexte + f'''<a href="docping - {heurefintestchange}.html">docping - {heurefintestchange}.html</a>'''
+            if fichiers.endswith(".html") and fichiers.startswith("docping---"):
+                if "en_cours" in fichiers:
+                    Fichtexte = Fichtexte + f'''<a class="current", href="docping---{heurefintestchange}.html">docping---{heurefintestchange}.html</a>'''
                 else:
                     Fichtexte = Fichtexte + f'''<a href="{fichiers}">{fichiers}</a>'''
         Fichtexte = Fichtexte + f'''</nav>
@@ -108,7 +100,7 @@ nav a:hover
 
         for fichiers in os.listdir(os.path.dirname(__file__)):
             stop=False
-            if fichiers.endswith(".html") and fichiers.startswith("docping -"):
+            if fichiers.endswith(".html") and fichiers.startswith("docping---"):
                 if "en cours" in fichiers:
                     pass
                 else:
@@ -139,8 +131,7 @@ nav a:hover
         <title>Ping</title>
     </head>
     <body>
-            {Fichtexte}
-
+{Fichtexte}
         <header>
             <h1>Résultats du test de coupures de connection</h1>
         </header>
@@ -161,3 +152,19 @@ nav a:hover
     </body>
 </html>
 ''')
+    def bat(heurefintestchange):
+        stop = False
+        i=0
+        with open(f"{os.path.dirname(__file__)}\\launch.bat", "w+", encoding="utf-8") as fichier:
+            contenu = fichier.readlines()
+
+            for ligne in contenu:
+                i = i + 1
+                if "start" in ligne and stop==False:
+                    try:
+                        contenu[i-1] = f'start "" "docping---{heurefintestchange}.html"'
+                        stop=True
+                    except:
+                        print(len(contenu))
+            i = 0
+            fichier.writelines(contenu)

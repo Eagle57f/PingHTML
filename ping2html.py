@@ -3,6 +3,7 @@ from time import strftime, sleep
 from datetime import datetime
 from threading import Thread
 from HTML_CSS import HTML_CSS
+from pathlib import Path
 
 exit=False
 numberFichier = 1
@@ -23,15 +24,17 @@ def fexit():
     return exit
 
 def prg():
-    global numberFichier, totalcoupures
+    global numberFichier, totalcoupurest
     var=True
+    i=0
+    totalcoupurest = ""
     for fichier in os.listdir(os.path.dirname(__file__)):
-        if "docping - en cours.html" in fichier:
-            fichier = open(f"{os.path.dirname(__file__)}\\docping - en cours.html", "r+", encoding="utf-8")
+        if "docping---en_cours.html" in fichier:
+            fichier = open(f"{os.path.dirname(__file__)}\\docping---en_cours.html", "r+", encoding="utf-8")
         else:
-            fichier = open(f"{os.path.dirname(__file__)}\\docping - en cours.html", "w", encoding="utf-8")
+            fichier = open(f"{os.path.dirname(__file__)}\\docping---en_cours.html", "w", encoding="utf-8")
             fichier.close()
-            fichier = open(f"{os.path.dirname(__file__)}\\docping - en cours.html", "r+", encoding="utf-8")
+            fichier = open(f"{os.path.dirname(__file__)}\\docping---en_cours.html", "r+", encoding="utf-8")
 
     fichierpath = os.path.dirname(__file__)
     fichier.truncate(0)
@@ -46,7 +49,7 @@ def prg():
 
         if response == 1 and var == True:
             heuredebut=a
-            totalcoupures = totalcoupures + f'<p class="coupure"><strong>Début de coupure:</strong> {heure}</p>'
+            totalcoupures1 = f'<p class="coupure"><strong>Début de coupure:</strong> {heure}</p>'
             var=False
 
         if response == 0 and var == False:
@@ -56,7 +59,8 @@ def prg():
                 dureecoupures = heurefin - heuredebut
             else:
                 dureecoupures = dureecoupures + (heurefin - heuredebut)
-            totalcoupures = totalcoupures + f'<p class="coupure"><strong>Fin de coupure:</strong> {heure}\tDurée de coupure: {str(heurefin - heuredebut)}</p>'
+            totalcoupures2 = f'<p class="coupure"><strong>Fin de coupure:</strong> {heure}\tDurée de coupure: {str(heurefin - heuredebut)}</p>'
+            totalcoupurest = totalcoupurest + totalcoupures1 + totalcoupures2
             nombrecoupures += 1
             var=True
     dureetest = datetime.now() - heuredebuttest
@@ -65,11 +69,13 @@ def prg():
     else:
         moyennecoupures = "0"
     heurefintest = datetime.now()
-    heurefintestchange = heurefintest.strftime("%Y-%m-%d %H-%M-%S")
-    fichier.write(HTML_CSS.fHTML(heuredebuttest, heurefintest, dureetest, nombrecoupures, dureecoupures, moyennecoupures, totalcoupures, heurefintestchange))
+    heurefintestchange = heurefintest.strftime("%Y-%m-%d_%H-%M-%S")
+    fichier.write(HTML_CSS.fHTML(heuredebuttest, heurefintest, dureetest, nombrecoupures, dureecoupures, moyennecoupures, totalcoupurest, heurefintestchange))
     fichier.close()
-    os.rename(f"{fichierpath}\\docping - en cours.html", f"{fichierpath}\\docping - {heurefintestchange}.html")
-    
+
+    os.rename(f"{fichierpath}\\docping---en_cours.html", f"{fichierpath}\\docping---{heurefintestchange}.html")
+    HTML_CSS.bat(heurefintestchange)
+
 ftkinter()
 
 def css():
