@@ -155,14 +155,15 @@ nav a:hover
     def bat(heurefintestchange):
         stop = False
         i=0
-        with open(f"{os.path.dirname(__file__)}\\launch.bat", "w+", encoding="utf-8") as fichier:
+        with open(f"{os.path.dirname(__file__)}\\launch.bat", "r", encoding="utf-8") as fichier:
             contenu = fichier.readlines()
-
+        with open(f"{os.path.dirname(__file__)}\\launch.bat", "w", encoding="utf-8") as fichier:
+        
             for ligne in contenu:
                 i = i + 1
                 if "start" in ligne and stop==False:
                     try:
-                        contenu[i-1] = f'start "" "docping---{heurefintestchange}.html"'
+                        contenu[i-1] = f'start "" "docping---{heurefintestchange}.html\n"'
                         stop=True
                     except:
                         print(len(contenu))
