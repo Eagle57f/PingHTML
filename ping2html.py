@@ -8,6 +8,7 @@ from pathlib import Path
 exit=False
 numberFichier = 1
 totalcoupures = ""
+file = __file__
 
 def ftkinter():
     global gui
@@ -24,7 +25,7 @@ def fexit():
     return exit
 
 def prg():
-    global numberFichier, totalcoupurest
+    global numberFichier, totalcoupurest, j, contenu
     var=True
     i=0
     totalcoupurest = ""
@@ -59,7 +60,7 @@ def prg():
                 dureecoupures = heurefin - heuredebut
             else:
                 dureecoupures = dureecoupures + (heurefin - heuredebut)
-            totalcoupures2 = f'<p class="coupure"><strong>Fin de coupure:</strong> {heure}\tDurée de coupure: {str(heurefin - heuredebut)}</p>'
+            totalcoupures2 = f'<p class="coupure"><strong>Fin de coupure:</strong> {heure}\t<strong>Durée de coupure:</strong> {str(heurefin - heuredebut)}</p>'
             totalcoupurest = totalcoupurest + totalcoupures1 + totalcoupures2
             nombrecoupures += 1
             var=True
@@ -74,7 +75,12 @@ def prg():
     fichier.close()
 
     os.rename(f"{fichierpath}\\docping---en_cours.html", f"{fichierpath}\\docping---{heurefintestchange}.html")
+    HTML_CSS.currentHTML(fichierpath)
     HTML_CSS.bat(heurefintestchange)
+
+
+
+
 
 ftkinter()
 

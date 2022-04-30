@@ -3,6 +3,9 @@ import os
 class HTML_CSS:
     def fCSS():
         return('''
+
+
+
 body
 {
     background-color: #2b2b2b;
@@ -11,35 +14,37 @@ body
     font-size: 12px;
     text-align: center;
 }
+
 p
 {
     font-size: 12px;
 }
+
 header
 {
     position: absolute;
+    font-size: 11px;
     font-family:'Arial Narrow Bold', sans-serif;
-    width: 100%;
-    left: 0px;
+    width: 40%;
+    left: 30%;
     top: 0px;
-    height: 60px;
-    background-color: #4389da;
+    height: 90px;
+    background-color: #0051ad;
 }
 nav
 {
     position: absolute;
     color: #fff;
-    width: 250px;
+    width: 30%;
     top: 0px;
-    left: 0px;
-    height: 1000px;
+    left: 0%;
+    height: 100%;
     background-color: rgb(34, 46, 46);
     z-index: 100;
 }
 nav h2
 {
-    cursor: pointer;
-    padding-left: 20px;
+    padding-left: 10px;
 }
   
 nav a
@@ -48,26 +53,52 @@ nav a
     color: #fff;
     display: block;
     padding: 12px;
-    padding-left: 30px;
+    padding-left: 5%;
     text-decoration: none;
     outline: none;
 }
 nav a:hover
 {
-    color: #38f2ff;
+    color: #386aff;
     background: #fff;
     position: relative;
     background-color: #fff;
     border-top-right-radius: 22px;
     border-bottom-right-radius: 22px;
 }
+
+nav .current
+{
+    background-color: #386aff;
+    color: white;
+    border-top-right-radius: 22px;
+    border-bottom-right-radius: 22px;
+}
+
+.display
+{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 30%;
+    height: 90px;
+    background-color: #2b2b2b;
+    z-index: 100;
+}
+
+.display h2
+{
+    padding-top: 0px;
+    font-size: 17px;
+}
+
 .bilan
 {
     position: absolute;
-    width: 100%;
-    right: 0px;
+    width: 70%;
+    left: 30%;
     height: 150px;
-    top: 60px;
+    top: 90px;
     background-color: #5a86ff;
 }
 .bilan:hover {
@@ -76,9 +107,9 @@ nav a:hover
 .container
 {
     position: absolute;
-    width: 100%;
-    right: 0px;
-    top: 210px;
+    width: 70%;
+    left: 30%;
+    top: 240px;
     background-color: #366cff;
 }
 .coupure:hover {
@@ -92,9 +123,13 @@ nav a:hover
         for fichiers in os.listdir(os.path.dirname(__file__)):
             if fichiers.endswith(".html") and fichiers.startswith("docping---"):
                 if "en_cours" in fichiers:
-                    Fichtexte = Fichtexte + f'''<a class="current", href="docping---{heurefintestchange}.html">docping---{heurefintestchange}.html</a>'''
+                    heurefintestchange2 = f'{heurefintestchange}'.replace("_", "<br>")
+                    Fichtexte = Fichtexte + f'''<a class="current", href="docping---{heurefintestchange}.html">{heurefintestchange2}</a>'''
                 else:
-                    Fichtexte = Fichtexte + f'''<a href="{fichiers}">{fichiers}</a>'''
+                    fichiersnohtml = fichiers.replace(".html", "")
+                    fichiersnohtml = fichiersnohtml.replace("docping---", "")
+                    fichiersnohtml = fichiersnohtml.replace("_", "<br>")
+                    Fichtexte = Fichtexte + f'''<a href="{fichiers}">{fichiersnohtml}</a>'''
         Fichtexte = Fichtexte + f'''</nav>
 '''
 
@@ -121,8 +156,8 @@ nav a:hover
                         fichier.writelines(contenu)
 
 
-
-
+        fichiers2 = f"docping---{heurefintestchange}.html"
+        fichiersbr = f"{fichiers2}".replace("_", "_<br>")
         return(f'''
 <html>
     <head>
@@ -133,8 +168,11 @@ nav a:hover
     <body>
 {Fichtexte}
         <header>
-            <h1>Résultats du test de coupures de connection</h1>
+            <h1>Résultats du test de coupures<br>de connection</h1>
         </header>
+        <div class="display">
+            <h2>{fichiersbr}</h2>
+        </div>
         <div class="bilan">
             <p>---------------------------------------------------------------<br>
             <strong>Début du test:</strong> {heuredebuttest}<br>
@@ -152,6 +190,56 @@ nav a:hover
     </body>
 </html>
 ''')
+
+
+    def currentHTML(fichierpath):
+        for fichiers in os.listdir(os.path.dirname(__file__)):
+            i=0
+            contenu = ""
+            lignesplit = ""
+            lignejoin = ""
+            if fichiers.endswith(".html") and fichiers.startswith("docping---"):
+                if "en cours" in fichiers:
+                    pass
+                else:
+                    with open(f"{os.path.dirname(__file__)}\\{fichiers}", "r", encoding="utf-8") as fichier:
+                        contenu = fichier.readlines()
+                        j=0
+                        for ligne in contenu:
+                            i = i + 1
+                            if "<nav>" in ligne:
+                                ligne = ligne.replace('class="current",', "")
+                                lignesplit = ligne.split()
+                                stop = False
+                                j = 0
+                                for item in lignesplit:
+                                    j = j + 1
+
+                                    fichierpath2 = f'{fichierpath}'.replace('\\', '\\\\')
+                                    changefichier = f"{fichier}"
+                                    changefichier = f"{changefichier}".replace(f"<_io.TextIOWrapper name='","")
+                                    changefichier = f"{changefichier}".replace(f"{fichierpath2}\\\\", "")
+                                    changefichier = f"{changefichier}".replace("' mode='r' encoding='utf-8'>","")
+
+                                    if f"{changefichier}" in item and stop == False:
+
+                                        stop = True
+                                        l = i
+                                        print(j)
+                                        lignesplit.insert(j-1, 'class="current",')
+
+                        if lignesplit != None:
+                            lignejoin = " ".join(lignesplit)
+                            print(lignejoin)
+                            print(i)
+                            contenu[l-1] = lignejoin + "\n"
+                            i = 0
+                            l = 0
+                        with open(f"{os.path.dirname(__file__)}\\{fichiers}", "w", encoding="utf-8") as fichier:
+                            if contenu != []:
+                                fichier.writelines(contenu)
+
+
     def bat(heurefintestchange):
         stop = False
         i=0
@@ -163,7 +251,7 @@ nav a:hover
                 i = i + 1
                 if "start" in ligne and stop==False:
                     try:
-                        contenu[i-1] = f'start "" "docping---{heurefintestchange}.html\n"'
+                        contenu[i-1] = f'start "" "docping---{heurefintestchange}.html"\n'
                         stop=True
                     except:
                         print(len(contenu))
