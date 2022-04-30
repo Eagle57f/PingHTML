@@ -225,13 +225,10 @@ nav .current
 
                                         stop = True
                                         l = i
-                                        print(j)
                                         lignesplit.insert(j-1, 'class="current",')
 
                         if lignesplit != None:
                             lignejoin = " ".join(lignesplit)
-                            print(lignejoin)
-                            print(i)
                             contenu[l-1] = lignejoin + "\n"
                             i = 0
                             l = 0
