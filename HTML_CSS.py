@@ -243,17 +243,12 @@ nav .current
     def bat(heurefintestchange):
         stop = False
         i=0
-        with open(f"{os.path.dirname(__file__)}\\launch.bat", "r", encoding="utf-8") as fichier:
-            contenu = fichier.readlines()
         with open(f"{os.path.dirname(__file__)}\\launch.bat", "w", encoding="utf-8") as fichier:
-        
-            for ligne in contenu:
-                i = i + 1
-                if "start" in ligne and stop==False:
-                    try:
-                        contenu[i-1] = f'start "" "docping---{heurefintestchange}.html"\n'
-                        stop=True
-                    except:
-                        print(len(contenu))
-            i = 0
-            fichier.writelines(contenu)
+            fichier.write(f'''
+cd "D:\Python\Ping2HTML"
+python ping2html.py
+
+start "" "docping---{heurefintestchange}.html"
+
+exit
+''')
